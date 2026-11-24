@@ -1,12 +1,12 @@
-// Firebase Console > Project settings > Your apps > Web app > "firebaseConfig" — copy the values here.
+// Firebase web config (project: ceylon-aalayangal)
 export const firebaseConfig = {
-  apiKey: "PASTE_API_KEY",
-  authDomain: "PASTE_PROJECT_ID.firebaseapp.com",
-  projectId: "PASTE_PROJECT_ID",
-  storageBucket: "PASTE_PROJECT_ID.appspot.com",
-  messagingSenderId: "PASTE_SENDER_ID",
-  appId: "PASTE_APP_ID"
+  apiKey: "AIzaSyA04Ud82uoIVQK5Qa026ctcjz5KM40aauk",
+  authDomain: "ceylon-aalayangal.firebaseapp.com",
+  projectId: "ceylon-aalayangal",
+  storageBucket: "ceylon-aalayangal.firebasestorage.app",
+  messagingSenderId: "92796317493",
+  appId: "1:92796317493:web:e0e2ecfd2916c4fbb3a67c"
 };
 
-// Admin page-ai paakka anumathi ulla Gmail mugavarigal (firestore.rules-ilum athe mugavari podanum)
-export const ADMIN_EMAILS = ["your-email@gmail.com"];
+// Admin page-ai paakka anumathi ulla Gmail (firestore.rules-ilum athe)
+export const ADMIN_EMAILS = ["ceylonaalayangal@gmail.com"];
