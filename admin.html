@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ஆலயங்கள் – நிர்வாகி பக்கம்</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Catamaran:wght@600;800&family=Hind+Madurai:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <div class="hin">
+    <div class="brand">
+      <small>ஆலயங்கள் இணையதளம்</small>
+      <h1>இலங்கை ஆலயங்கள் தரவு சேகரிப்பு</h1>
+      <p>உங்கள் ஊர்க் கோவிலின் விவரங்களைப் பதிவு செய்யுங்கள். ஒவ்வொரு பதிவும் நேரடியாக தரவுத்தளத்தில் சேமிக்கப்படும்.</p>
+    </div>
+    <svg class="gop" viewBox="0 0 200 170" aria-hidden="true">
+      <defs><linearGradient id="g" x1="0" x2="1"><stop offset="0" stop-color="#ffcf7a"/><stop offset=".55" stop-color="#f29a1f"/><stop offset="1" stop-color="#c46b0a"/></linearGradient></defs>
+      <g fill="url(#g)">
+        <rect x="20" y="146" width="160" height="24"/>
+        <rect x="32" y="122" width="136" height="24"/>
+        <rect x="44" y="98" width="112" height="24"/>
+        <rect x="56" y="74" width="88" height="24"/>
+        <rect x="68" y="52" width="64" height="22"/>
+        <path d="M62 52 Q100 18 138 52Z"/>
+        <rect x="96" y="6" width="8" height="20" rx="4"/>
+      </g>
+      <g fill="#7d1022" opacity=".55">
+        <path d="M86 170v-18a14 14 0 0 1 28 0v18z"/>
+        <rect x="48" y="128" width="10" height="12"/><rect x="142" y="128" width="10" height="12"/>
+        <rect x="62" y="104" width="10" height="12"/><rect x="128" y="104" width="10" height="12"/>
+        <rect x="95" y="80" width="10" height="12"/>
+      </g>
+      <g fill="#fff3d6" opacity=".7"><rect x="20" y="146" width="160" height="2"/><rect x="32" y="122" width="136" height="2"/><rect x="44" y="98" width="112" height="2"/><rect x="56" y="74" width="88" height="2"/></g>
+    </svg>
+  </div>
+  <nav><a href="./">புதிய பதிவு</a><a href="admin.html" aria-current="page">சேகரித்த தரவுகள் <span class="cnt" id="cnt">0</span></a></nav>
+  <div class="trim"></div>
+</header>
+
+<main>
+<section id="gate" class="gate">
+  <h2>நிர்வாகி பக்கம்</h2>
+  <p class="lead">சேகரித்த தரவுகளைப் பார்க்க உங்கள் Google கணக்கில் உள்நுழையுங்கள்.</p>
+  <button class="btn" id="login" type="button">Google மூலம் உள்நுழை</button>
+  <div class="msg" id="gmsg" role="status"></div>
+</section>
+<section id="vRec" hidden>
+  <div class="acts" style="justify-content:space-between;margin:0 0 16px"><span class="hint" id="who"></span><button class="btn alt sm" id="logout" type="button">வெளியேறு</button></div>
+  <div class="stats" id="stats"></div>
+  <div class="tools">
+    <input id="q" type="search" placeholder="கோவில், ஊர், ஐயர், சேகரிப்பவர் தேடுக…" aria-label="தேடல்">
+    <select id="fd" aria-label="மாவட்டம்"><option value="">எல்லா மாவட்டங்களும்</option></select>
+    <button class="btn alt" id="csv" type="button">CSV பதிவிறக்கு</button>
+  </div>
+  <div class="msg" id="rmsg" role="status"></div>
+  <div class="grid" id="list"></div>
+</section>
+</main>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore, collection, query, orderBy, onSnapshot, doc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getAuth, GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { firebaseConfig, ADMIN_EMAILS } from "./firebase-config.js";
+import { DIST } from "./districts.js";
+
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const show=(el,t,ok)=>{el.textContent=t;el.className="msg "+(ok?"ok":"bad")};
+$("fd").insertAdjacentHTML("beforeend",DIST.map(d=>`<option>${d}</option>`).join(""));
+if(firebaseConfig.apiKey.startsWith("PASTE")){show($("gmsg"),"Firebase அமைக்கப்படவில்லை — firebase-config.js-ஐ நிரப்புங்கள்.",0);throw 0}
+const app=initializeApp(firebaseConfig),db=getFirestore(app),auth=getAuth(app);
+let rows=[],unsub=null;
+
+$("login").onclick=()=>signInWithPopup(auth,new GoogleAuthProvider()).catch(e=>show($("gmsg"),"உள்நுழைய முடியவில்லை.",0));
+$("logout").onclick=()=>signOut(auth);
+onAuthStateChanged(auth,u=>{if(unsub){unsub();unsub=null}
+  const ok=u&&ADMIN_EMAILS.includes(u.email);$("gate").hidden=!!ok;$("vRec").hidden=!ok;
+  if(u&&!ok)show($("gmsg"),u.email+" — இந்தக் கணக்குக்கு அனுமதி இல்லை.",0);
+  if(!ok)return;$("who").textContent=u.email;
+  unsub=onSnapshot(query(collection(db,"temples"),orderBy("createdAt","desc")),s=>{rows=s.docs.map(d=>({id:d.id,...d.data()}));render()},
+    e=>show($("rmsg"),"தரவுகளைப் படிக்க முடியவில்லை — firestore.rules-இல் உங்கள் Gmail சரியா எனப் பாருங்கள்.",0))});
+
+const dtOf=r=>r.createdAt&&r.createdAt.toDate?r.createdAt.toDate():null;
+const fmtD=r=>{const d=dtOf(r);return d?d.toLocaleString("ta-LK",{dateStyle:"medium",timeStyle:"short"}):""};
+function view(){const q=$("q").value.trim().toLowerCase(),d=$("fd").value;
+  return rows.filter(r=>(!d||r.district===d)&&(!q||[r.name,r.village,r.priest,r.collector,r.gs,r.specials].join(" ").toLowerCase().includes(q)))}
+function render(){$("cnt").textContent=rows.length;
+  const dists=new Set(rows.map(r=>r.district)),cols=new Set(rows.map(r=>r.collector)),ph=rows.filter(r=>r.photo).length;
+  $("stats").innerHTML=`<div><b>${rows.length}</b>கோவில்கள்</div><div><b>${dists.size}</b>மாவட்டங்கள்</div><div><b>${ph}</b>படங்களுடன்</div><div><b>${cols.size}</b>சேகரிப்பவர்கள்</div>`;
+  const v=view();
+  if(!rows.length){$("list").innerHTML=`<div class="empty">இன்னும் பதிவுகள் இல்லை. <a href="./">முதல் கோவிலைப் பதியுங்கள்</a>.</div>`;return}
+  if(!v.length){$("list").innerHTML=`<div class="empty">தேடலுக்குப் பொருந்தும் பதிவு இல்லை.</div>`;return}
+  $("list").innerHTML=v.map(r=>{const img=r.photo&&r.photo.startsWith("data:image/jpeg;base64,")?`<img src="${esc(r.photo)}" alt="${esc(r.name)}" loading="lazy">`:"படம் இல்லை";
+    const map=r.map&&/^https:\/\//.test(r.map)?`<dt>இருப்பிடம்</dt><dd><a href="${esc(r.map)}" target="_blank" rel="noopener">Google Maps-இல் பார்</a>${r.address?" · "+esc(r.address):""}</dd>`:r.address?`<dt>முகவரி</dt><dd>${esc(r.address)}</dd>`:"";
+    const it=(k,l)=>r[k]?`<dt>${l}</dt><dd>${esc(r[k])}</dd>`:"";
+    return `<article class="rec"><div class="ph">${img}</div><div class="bd"><h3>${esc(r.name)}</h3><div class="loc">${esc(r.village)} · ${esc(r.district)}${r.gs?" · GS: "+esc(r.gs):""}</div>
+    <dl>${it("priest","ஐயர்")}${r.mobile?`<dt>தொலைபேசி</dt><dd><a href="tel:${esc(r.mobile)}">${esc(r.mobile)}</a></dd>`:""}${map}${it("specials","சிறப்புகள்")}${it("history","சிறு வரலாறு")}</dl></div>
+    <div class="ft"><span>சேகரித்தவர்: <b>${esc(r.collector)}</b><br>${esc(fmtD(r))}</span>
+    <span><button class="btn alt sm" data-del="${esc(r.id)}">நீக்கு</button><span class="conf" data-c="${esc(r.id)}"><button class="btn sm" data-yes="${esc(r.id)}">உறுதி</button><button class="btn alt sm" data-no="${esc(r.id)}">வேண்டாம்</button></span></span></div></article>`}).join("")}
+$("q").addEventListener("input",render);$("fd").addEventListener("change",render);
+$("list").addEventListener("click",async e=>{const t=e.target.closest("button");if(!t)return;
+  const c=id=>[...document.querySelectorAll("[data-c]")].find(x=>x.dataset.c===id),dl=id=>[...document.querySelectorAll("[data-del]")].find(x=>x.dataset.del===id);
+  if(t.dataset.del){t.hidden=true;c(t.dataset.del).classList.add("on")}
+  else if(t.dataset.no){c(t.dataset.no).classList.remove("on");dl(t.dataset.no).hidden=false}
+  else if(t.dataset.yes){t.disabled=true;try{await deleteDoc(doc(db,"temples",t.dataset.yes))}catch(x){show($("rmsg"),"நீக்க முடியவில்லை.",0);t.disabled=false}}});
+
+/* CSV (photos not included — too large for a spreadsheet) */
+const FIELDS=[["name","கோவில்"],["village","கிராமம்"],["district","மாவட்டம்"],["gs","GS பிரிவு"],["priest","ஐயர்"],["mobile","தொலைபேசி"],["address","முகவரி"],["map","Map இணைப்பு"],["specials","சிறப்புகள்"],["history","வரலாறு"],["collector","சேகரித்தவர்"],["created","பதிவு நேரம்"],["hasPhoto","படம் உள்ளதா"]];
+$("csv").onclick=()=>{const cell=v=>{let s=String(v??"");if(/^[=+\-@]/.test(s))s="'"+s;return '"'+s.replace(/"/g,'""')+'"'};
+  const out="﻿"+[FIELDS.map(f=>f[1]).join(","),...view().map(r=>{const x={...r,created:dtOf(r)?dtOf(r).toISOString():"",hasPhoto:r.photo?"ஆம்":"இல்லை"};return FIELDS.map(([k])=>cell(x[k])).join(",")})].join("\r\n");
+  const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([out],{type:"text/csv;charset=utf-8"}));a.download="aalayangal-temples-"+new Date().toISOString().slice(0,10)+".csv";a.click();setTimeout(()=>URL.revokeObjectURL(a.href),2000)};
+</script>
+</body>
+</html>

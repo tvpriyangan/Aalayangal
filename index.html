@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ஆலயங்கள் இணையதளம் – தரவு சேகரிப்பு</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Catamaran:wght@600;800&family=Hind+Madurai:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <div class="hin">
+    <div class="brand">
+      <small>ஆலயங்கள் இணையதளம்</small>
+      <h1>இலங்கை ஆலயங்கள் தரவு சேகரிப்பு</h1>
+      <p>உங்கள் ஊர்க் கோவிலின் விவரங்களைப் பதிவு செய்யுங்கள். ஒவ்வொரு பதிவும் நேரடியாக தரவுத்தளத்தில் சேமிக்கப்படும்.</p>
+    </div>
+    <svg class="gop" viewBox="0 0 200 170" aria-hidden="true">
+      <defs><linearGradient id="g" x1="0" x2="1"><stop offset="0" stop-color="#ffcf7a"/><stop offset=".55" stop-color="#f29a1f"/><stop offset="1" stop-color="#c46b0a"/></linearGradient></defs>
+      <g fill="url(#g)">
+        <rect x="20" y="146" width="160" height="24"/>
+        <rect x="32" y="122" width="136" height="24"/>
+        <rect x="44" y="98" width="112" height="24"/>
+        <rect x="56" y="74" width="88" height="24"/>
+        <rect x="68" y="52" width="64" height="22"/>
+        <path d="M62 52 Q100 18 138 52Z"/>
+        <rect x="96" y="6" width="8" height="20" rx="4"/>
+      </g>
+      <g fill="#7d1022" opacity=".55">
+        <path d="M86 170v-18a14 14 0 0 1 28 0v18z"/>
+        <rect x="48" y="128" width="10" height="12"/><rect x="142" y="128" width="10" height="12"/>
+        <rect x="62" y="104" width="10" height="12"/><rect x="128" y="104" width="10" height="12"/>
+        <rect x="95" y="80" width="10" height="12"/>
+      </g>
+      <g fill="#fff3d6" opacity=".7"><rect x="20" y="146" width="160" height="2"/><rect x="32" y="122" width="136" height="2"/><rect x="44" y="98" width="112" height="2"/><rect x="56" y="74" width="88" height="2"/></g>
+    </svg>
+  </div>
+  <nav><a href="./" aria-current="page">புதிய பதிவு</a></nav>
+  <div class="trim"></div>
+</header>
+
+<main>
+<section class="col">
+  <p class="lead">* குறியிட்டவை கட்டாயம். மற்றவை தெரிந்தால் மட்டும் நிரப்புங்கள்.</p>
+  <form id="frm" novalidate>
+    <fieldset>
+      <legend>கோவில் விவரம்</legend>
+      <div class="f"><label for="name">கோவிலின் பெயர் என்ன? <span class="req">*</span></label>
+        <input id="name" name="name" required maxlength="150" placeholder="உதா: ஸ்ரீ சிவசுப்பிரமணிய சுவாமி கோவில்"></div>
+      <div class="row2">
+        <div class="f"><label for="village">கிராமம் / ஊர் <span class="req">*</span></label>
+          <input id="village" name="village" required maxlength="100"></div>
+        <div class="f"><label for="district">மாவட்டம் <span class="req">*</span></label>
+          <select id="district" name="district" required><option value="">தெரிவு செய்யுங்கள்</option></select></div>
+      </div>
+      <div class="f"><label for="gs">கிராம சேவகர் (GS) பிரிவு</label>
+        <input id="gs" name="gs" maxlength="100" placeholder="உதா: J/123 நல்லூர் வடக்கு"></div>
+    </fieldset>
+
+    <fieldset>
+      <legend>தொடர்பு</legend>
+      <div class="row2">
+        <div class="f"><label for="priest">ஐயர் / பூசகரின் பெயர்</label>
+          <input id="priest" name="priest" maxlength="100"></div>
+        <div class="f"><label for="mobile">தொலைபேசி இலக்கம்</label>
+          <input id="mobile" name="mobile" type="tel" inputmode="tel" maxlength="16" placeholder="07X XXX XXXX">
+          <div class="hint" id="mobHint">கோவில் அல்லது ஐயரின் இலக்கம்</div></div>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <legend>இருப்பிடம்</legend>
+      <div class="f"><label for="address">முகவரி / அடையாளம்</label>
+        <input id="address" name="address" maxlength="200" placeholder="உதா: பிரதான வீதி, சந்தைக்கு அருகில்"></div>
+      <div class="f"><label for="map">Google Maps இணைப்பு <span class="en">(map link)</span></label>
+        <input id="map" name="map" type="url" inputmode="url" maxlength="400" placeholder="https://maps.app.goo.gl/...">
+        <div class="hint">Google Maps-இல் கோவிலைத் தேடி "Share" அழுத்தி இணைப்பை ஒட்டுங்கள்.</div></div>
+    </fieldset>
+
+    <fieldset>
+      <legend>சிறப்புகளும் வரலாறும்</legend>
+      <div class="f"><label for="specials">கோவிலின் சிறப்புகள் என்ன?</label>
+        <textarea id="specials" name="specials" maxlength="1500" placeholder="மூலவர், திருவிழாக்கள், தேர், தீர்த்தம், விசேட பூசைகள்…"></textarea></div>
+      <div class="f"><label for="history">சிறு வரலாறு</label>
+        <textarea id="history" name="history" maxlength="3000" placeholder="கோவில் எப்போது, யாரால் அமைக்கப்பட்டது…"></textarea>
+        <div class="hint"><span id="histN">0</span> / 3000</div></div>
+    </fieldset>
+
+    <fieldset>
+      <legend>கோவில் படம்</legend>
+      <label class="drop" id="drop" for="photo">
+        <input id="photo" type="file" accept="image/*">
+        <span class="pick">படம் ஒன்றைத் தெரிவு செய்யுங்கள் (அதிகபட்சம் 1)<br><span class="hint">JPG / PNG — படம் தானாகச் சிறிதாக்கப்படும்</span></span>
+        <span class="prev"><img id="prevImg" alt="தெரிவு செய்த படம்"><span><b id="prevName"></b><br><button type="button" class="btn alt sm" id="rmPhoto">படத்தை நீக்கு</button></span></span>
+      </label>
+    </fieldset>
+
+    <fieldset>
+      <legend>சேகரிப்பவர்</legend>
+      <div class="f"><label for="collector">தகவலைச் சேகரித்தவரின் பெயர் <span class="req">*</span></label>
+        <input id="collector" name="collector" required maxlength="100">
+        <div class="hint">அடுத்த பதிவுக்கும் இந்தப் பெயர் நினைவில் இருக்கும்.</div></div>
+    </fieldset>
+
+    <div class="msg" id="msg" role="status"></div>
+    <div class="acts">
+      <button class="btn" id="submit" type="submit">பதிவு செய்</button>
+      <button class="btn alt" id="clear" type="button">படிவத்தை அழி</button>
+    </div>
+  </form>
+</section>
+</main>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { firebaseConfig } from "./firebase-config.js";
+import { DIST } from "./districts.js";
+
+const $=id=>document.getElementById(id);
+const store={get(k){try{return localStorage.getItem(k)}catch(e){return null}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
+$("district").insertAdjacentHTML("beforeend",DIST.map(d=>`<option>${d}</option>`).join(""));
+const frm=$("frm"),msg=$("msg");
+const show=(el,t,ok)=>{el.textContent=t;el.className="msg "+(ok?"ok":"bad")};
+const hide=el=>{el.className="msg";el.textContent=""};
+
+let db=null;
+try{ if(firebaseConfig.apiKey.startsWith("PASTE")) throw 0; db=getFirestore(initializeApp(firebaseConfig)); }
+catch(e){ show(msg,"Firebase அமைக்கப்படவில்லை — firebase-config.js-ஐ நிரப்புங்கள்.",0); }
+
+/* draft + collector memory */
+const DRAFT="aalayam-draft",WHO="aalayam-collector";
+try{const d=JSON.parse(store.get(DRAFT)||"{}");for(const k in d){if(frm.elements[k])frm.elements[k].value=d[k]}}catch(e){}
+if(!$("collector").value)$("collector").value=store.get(WHO)||"";
+let dt;frm.addEventListener("input",()=>{clearTimeout(dt);dt=setTimeout(()=>{const o={};for(const el of frm.elements)if(el.name)o[el.name]=el.value;store.set(DRAFT,JSON.stringify(o))},400);$("histN").textContent=$("history").value.length});
+$("histN").textContent=$("history").value.length;
+
+/* photo: one image, shrunk to a JPEG under ~650 KB, kept inside the record */
+let photo="";
+function load(file){return new Promise((res,rej)=>{const img=new Image(),u=URL.createObjectURL(file);img.onload=()=>{URL.revokeObjectURL(u);res(img)};img.onerror=()=>{URL.revokeObjectURL(u);rej()};img.src=u})}
+async function shrink(file){const img=await load(file);
+  for(const [M,q] of [[1280,.78],[1100,.7],[900,.65],[720,.6],[560,.55]]){
+    const s=Math.min(1,M/Math.max(img.width,img.height)),c=document.createElement("canvas");
+    c.width=Math.round(img.width*s);c.height=Math.round(img.height*s);c.getContext("2d").drawImage(img,0,0,c.width,c.height);
+    const url=c.toDataURL("image/jpeg",q);if(url.length<650000)return url}
+  throw new Error("big")}
+$("photo").addEventListener("change",async e=>{const f=e.target.files[0];if(!f)return;
+  if(!f.type.startsWith("image/")){show(msg,"படக் கோப்பு மட்டுமே பதிவேற்றலாம்.",0);return}
+  try{photo=await shrink(f)}catch(err){photo="";show(msg,"இந்தப் படத்தைப் பயன்படுத்த முடியவில்லை. வேறு படம் தெரிவு செய்யுங்கள்.",0);return}
+  $("prevImg").src=photo;$("prevName").textContent=f.name+" · "+Math.round(photo.length*.75/1024)+" KB";$("drop").classList.add("has");hide(msg)});
+function clearPhoto(){photo="";$("photo").value="";$("drop").classList.remove("has");$("prevImg").removeAttribute("src")}
+$("rmPhoto").addEventListener("click",e=>{e.preventDefault();e.stopPropagation();clearPhoto()});
+
+/* validation */
+const telOk=v=>!v||/^(\+?94|0)?[0-9]{9}$/.test(v.replace(/[\s-]/g,""));
+function validate(){let first=null;for(const el of frm.querySelectorAll("[required]")){const bad=!el.value.trim();el.classList.toggle("bad-in",bad);if(bad&&!first)first=el}
+  const m=$("mobile"),mb=!telOk(m.value.trim());m.classList.toggle("bad-in",mb);if(mb&&!first)first=m;
+  const mp=$("map"),pb=!!(mp.value.trim()&&!/^https:\/\//.test(mp.value.trim()));mp.classList.toggle("bad-in",pb);if(pb&&!first)first=mp;
+  if(first){first.focus();show(msg,first===m?"தொலைபேசி இலக்கம் சரியில்லை (உதா: 0771234567).":first===mp?"Map இணைப்பு https:// என்று தொடங்க வேண்டும்.":"* குறியிட்ட கட்டங்களை நிரப்புங்கள்.",0);return false}return true}
+
+let busy=false;
+frm.addEventListener("submit",async e=>{e.preventDefault();if(busy)return;hide(msg);if(!validate())return;
+  if(!db){show(msg,"Firebase அமைக்கப்படவில்லை — firebase-config.js-ஐ நிரப்புங்கள்.",0);return}
+  const b=$("submit");busy=true;b.disabled=true;b.textContent="சேமிக்கிறது…";
+  try{const rec={};for(const el of frm.elements)if(el.name)rec[el.name]=el.value.trim();
+    rec.mobile=rec.mobile.replace(/[\s-]/g,"");rec.photo=photo;rec.createdAt=serverTimestamp();
+    await addDoc(collection(db,"temples"),rec);
+    store.set(WHO,rec.collector);const who=rec.collector;frm.reset();clearPhoto();$("collector").value=who;store.set(DRAFT,"{}");$("histN").textContent=0;
+    show(msg,"✓ "+rec.name+" வெற்றிகரமாகப் பதிவு செய்யப்பட்டது. நன்றி! அடுத்த கோவிலைப் பதியலாம்.",1);scrollTo({top:0,behavior:"smooth"});
+  }catch(err){show(msg,err&&err.code==="permission-denied"?"பதிவு ஏற்கப்படவில்லை — விவரங்களைச் சரிபார்த்து மீண்டும் முயலுங்கள்.":"சேமிக்க முடியவில்லை. இணைய இணைப்பைச் சரிபார்த்து மீண்டும் முயலுங்கள்.",0)}
+  finally{busy=false;b.disabled=false;b.textContent="பதிவு செய்"}});
+$("clear").addEventListener("click",()=>{const who=$("collector").value;frm.reset();clearPhoto();$("collector").value=who;store.set(DRAFT,"{}");hide(msg);frm.querySelectorAll(".bad-in").forEach(x=>x.classList.remove("bad-in"))});
+</script>
+</body>
+</html>
